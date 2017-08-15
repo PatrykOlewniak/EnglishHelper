@@ -10,22 +10,18 @@ class EnglishHelper():
     db_con.initial_connection()
 
     def menu(self):
-        print ("A - add new World")
+        print ("A - add new word")
         choice = input()
         if choice=='A':
-            print ("Write down your english world:")
+            print ("Write down your english word:")
 
-
-    def query(cls, query, fetchAll=False):
-        result = cls.db_con.query_exec(query, fetchAll=fetchAll)
-        return result
 
     @classmethod
-    def select(cls, query, fetchAll=False):
-        result = cls.db_con.query_exec(query, fetchAll=fetchAll)
+    def query(cls, queryString, fetchAll=False):
+        result = cls.db_con.query_exec(queryString, fetchAll=fetchAll)
         return result
 
 
 
 
-print EnglishHelper.select("SELECT * FROM ENGLISH_HELPER.EnglishWords")
+print EnglishHelper.query("SELECT * FROM ENGLISH_HELPER.EnglishWords")

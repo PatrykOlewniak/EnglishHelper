@@ -13,17 +13,13 @@ class Connection:
         self.curr=None
         self.initial_connection()
 
-    conn = pymysql.connect(host='localhost', port=3306, user='englishhelper', passwd='english123', db='ENGLISH_HELPER')
-
     def initial_connection(self):
-
         self.conn = pymysql.connect(host=self.host,
                                     user=self.user,
                                     passwd=self.password,
                                     db=self.database,
                                     port=self.port)
         self.curr=self.conn.cursor()
-
 
     def query_exec(self, query, fetchAll=False):
         """:return: single row (first one) if default value -if fetchAll=False
@@ -40,7 +36,6 @@ class Connection:
         else:
             result = self.curr.fetchone()
             return result
-
 
     def close_connection(self):
         self.conn.close()
