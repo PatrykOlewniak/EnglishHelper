@@ -1,0 +1,14 @@
+#ignore those files and directories
+
+.idea
+*.pyc
+*.pyo
+*.log
+*.pid
+*.sock
+*.DS_Store
+.*project
+.settings
+#*#
+*~
+tmp.txt

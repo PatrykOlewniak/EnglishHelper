@@ -1,0 +1,17 @@
+import pymysql
+
+conn = pymysql.connect(host='localhost', port=3306, user='englishhelper', passwd='english123', db='ENGLISH_HELPER')
+
+cur = conn.cursor()
+
+cur.execute("SELECT * FROM ENGLISH_HELPER.EnglishWords")
+
+print(cur.description)
+
+print()
+
+for row in cur:
+    print(row)
+
+cur.close()
+conn.close()
