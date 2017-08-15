@@ -1,5 +1,6 @@
 import pymysql
 
+
 class Connection:
     def __init__(self, user, password, database, host='localhost', port=3306, autoconect = True):
         self.database = database
@@ -15,6 +16,7 @@ class Connection:
     conn = pymysql.connect(host='localhost', port=3306, user='englishhelper', passwd='english123', db='ENGLISH_HELPER')
 
     def initial_connection(self):
+
         self.conn = pymysql.connect(host=self.host,
                                     user=self.user,
                                     passwd=self.password,
@@ -23,29 +25,25 @@ class Connection:
         self.curr=self.conn.cursor()
 
 
-    def query_exec(self,query):
-        try:#
-            sql = str(query)
-            self.curr.execute(sql, ('webmaster@python.org', 'very-secret'))
+    def query_exec(self, query, fetchAll=False):
+        """:return: single row (first one) if default value -if fetchAll=False
+                    if fetchAll positive - return list with query result elements"""
+        query = str(query)
+        self.curr.execute(query)
+        self.conn.commit()
 
-            # connection is not autocommit by default. So you must commit to save
-            # your changes.
-            connection.commit()
-
-            with connection.cursor() as cursor:
-                # Read a single record
-                sql = "SELECT `id`, `password` FROM `users` WHERE `email`=%s"
-                cursor.execute(sql, ('webmaster@python.org',))
-                result = cursor.fetchone()
-                print(result)
-        finally:
-            connection.close()
+        if fetchAll:
+            resultList=[]
+            for k in self.curr:
+                resultList.append((k))
+            return resultList
+        else:
+            result = self.curr.fetchone()
+            return result
 
 
+    def close_connection(self):
+        self.conn.close()
 
-k = Connection(user='englishhelper', password='english123', database='ENGLISH_HELPER')
 
-k.initial_connection()
-k.curr.execute("SELECT * FROM ENGLISH_HELPER.EnglishWords")
-for row in k.curr:
-    print(row)
+

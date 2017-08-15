@@ -1,17 +1,31 @@
 import pymysql
+from connection import Connection
+import myconfig
 
-conn = pymysql.connect(host='localhost', port=3306, user='englishhelper', passwd='english123', db='ENGLISH_HELPER')
+password=myconfig.password
+user=myconfig.user
 
-cur = conn.cursor()
+class EnglishHelper():
+    db_con = Connection(user=user, password=password, database='ENGLISH_HELPER')
+    db_con.initial_connection()
 
-cur.execute("SELECT * FROM ENGLISH_HELPER.EnglishWords")
+    def menu(self):
+        print ("A - add new World")
+        choice = input()
+        if choice=='A':
+            print ("Write down your english world:")
 
-print(cur.description)
 
-print()
+    def query(cls, query, fetchAll=False):
+        result = cls.db_con.query_exec(query, fetchAll=fetchAll)
+        return result
 
-for row in cur:
-    print(row)
+    @classmethod
+    def select(cls, query, fetchAll=False):
+        result = cls.db_con.query_exec(query, fetchAll=fetchAll)
+        return result
 
-cur.close()
-conn.close()
+
+
+
+print EnglishHelper.select("SELECT * FROM ENGLISH_HELPER.EnglishWords")
