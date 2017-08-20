@@ -1,17 +1,22 @@
-
+# -*- coding: utf-8 -*-
 
 class MainFileHandler:
-    # TODO: add file scanning for new files, log etc, add the iterator
-    file=None
+    def __init__(self, file):
+        self.file = file
+        self.readFile(self.file)
 
-    @staticmethod
-    def readFile(fileSource, directory="files/",method="r"):
-        MainFileHandler.file = open(str(directory+fileSource), method)
+    def readFile(self,fileSource, directory="files/",method="r"):
+        self.file = open(str(directory+fileSource), method)
+
+    def wordsToList(self):
+        wordsList = self.file.read().split(",")
+        return wordsList
+
+    def __str__(self):
+        return ("Words in file: "+str(self.wordsToList()))
 
 
 
-
-MainFileHandler.readFile("words1.txt")
-print MainFileHandler.file
+    #TODO: add file scanning for new files, log etc, add the iterator
 
 
