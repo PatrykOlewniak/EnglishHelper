@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import random
 import pymysql
 from connection import Connection
 import myconfig
@@ -74,16 +75,46 @@ class EnglishHelper():
             except:
                 print "There is no translation, sorry :("
 
+    @classmethod
+    def shuffleForEngWord(cls):
+        englishWordsWithID= dict(EnglishHelper.query("SELECT id_eng, english_word FROM EnglishWords",fetchAll=True))
+        listOfEnglishWordsId = englishWordsWithID.keys()
+        shuffledElementID = listOfEnglishWordsId[random.randint(0, len(listOfEnglishWordsId)-1)]
+        polishTranslations = dict(EnglishHelper.query("SELECT id_eng, id_pl FROM translations", fetchAll=True))
+        shuffledPLID = polishTranslations[shuffledElementID]
+        shuffledPLWord = (EnglishHelper.query("SELECT polish_word FROM PolishWords WHERE id_pl=%s"%shuffledPLID))
+        return shuffledPLWord[0]
 
+    @classmethod
+    def shuffleForPLWord(cls):
+        polishWordsWithID= dict(EnglishHelper.query("SELECT id_pl, polish_word FROM PolishWords",fetchAll=True))
+        listOfPolishWordsId = polishWordsWithID.keys()
+        shuffledElementID = listOfPolishWordsId[random.randint(0, len(listOfPolishWordsId)-1)]
+        englishTranslations = dict(EnglishHelper.query("SELECT id_pl, id_eng FROM translations", fetchAll=True))
+        shuffledEngID = englishTranslations[shuffledElementID]
+        shuffledEngWord = (EnglishHelper.query("SELECT english_word FROM EnglishWords WHERE id_eng=%s"%shuffledEngID))
+        return shuffledEngWord[0]
 
-
+    @classmethod
+    def askForWordAndCheck(cls):
+        searchingWord = EnglishHelper.shuffleForEngWord()
+        print "Tell me english word that means in polish : %s"%searchingWord
+        answer = raw_input()
+        if answer == searchingWord:
+            print "GOOD JOB ! %s = %s"%(answer,searchingWord)
+        else:
+            print "sorry, I asked about %s"%searchingWord
 
 
 
 if __name__ == "__main__":
-    EnglishHelper.addNewWordsFromFile("words1.txt")
-    EnglishHelper.harvestPolishMeaning()
-    EnglishHelper.showTranslatedWithoutJoin()
+    #EnglishHelper.addNewWordsFromFile("words1.txt")
+    #EnglishHelper.harvestPolishMeaning()
+    #EnglishHelper.showTranslatedWithoutJoin()
     #print EnglishHelper.query("SELECT * FROM ENGLISH_HELPER.PolishWords;")
+    #print EnglishHelper.shuffleForEngWord()
+    #print EnglishHelper.shuffleForPLWord()
+    EnglishHelper.askForWordAndCheck()
+
 
 
