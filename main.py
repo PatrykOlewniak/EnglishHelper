@@ -97,6 +97,7 @@ class EnglishHelper():
 
     @classmethod
     def askForWordAndCheck(cls):
+        #TODO: fix the searching + add db searching implementation
         searchingWord = EnglishHelper.shuffleForEngWord()
         print "Tell me english word that means in polish : %s"%searchingWord
         answer = raw_input()
