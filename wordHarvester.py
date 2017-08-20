@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from urllib import urlopen
 from bs4 import BeautifulSoup
 
@@ -19,12 +21,12 @@ class dikiTranslator:
         bsObj = BeautifulSoup(html.read(), "html5lib")
         nameList = bsObj.findAll("span", {"class": "hw"})
         #strip for removing spaces and tabs before
-        return (nameList[0].get_text()).strip()
+        return (nameList[1].get_text()).strip()
 
 
 
 
-print dikiTranslator.searchWordPolsihPartOfSpeech("task")
+#print dikiTranslator.searchWordPartOfSpeech("alter")
 
 
-print dikiTranslator.searchWordPolishMeaning("task")
+#print dikiTranslator.searchWordPolishMeaning("alter")
