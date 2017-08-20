@@ -18,13 +18,15 @@ class Connection:
                                     user=self.user,
                                     passwd=self.password,
                                     db=self.database,
-                                    port=self.port)
+                                    port=self.port,
+                                    use_unicode=True,
+                                    charset='utf8')
         self.curr=self.conn.cursor()
 
     def query_exec(self, query, fetchAll=False):
         """:return: single row (first one) if default value -if fetchAll=False
                     if fetchAll positive - return list with query result elements"""
-        query = str(query)
+        query = str(query.encode('utf-8'))
         self.curr.execute(query)
         self.conn.commit()
 
