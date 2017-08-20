@@ -9,7 +9,7 @@ class MainFileHandler:
         self.file = open(str(directory+fileSource), method)
 
     def wordsToList(self):
-        wordsList = self.file.read().split(",")
+        wordsList = self.file.read().rstrip('').split(",")
         return wordsList
 
     def __str__(self):

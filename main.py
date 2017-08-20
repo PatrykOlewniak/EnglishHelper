@@ -39,18 +39,40 @@ class EnglishHelper():
     @classmethod
     def addNewWordsFromFile(cls, file):
         for word in EnglishHelper._getNewWordsFromFile(file):
-            print EnglishHelper._checkIfExistsInDB("english_word","EnglishWords", "english_word", word)
             if not EnglishHelper._checkIfExistsInDB("english_word","EnglishWords", "english_word", word):
                 cls.query("INSERT INTO EnglishWords (english_word) values ('%s')" % word)
+                print ("New word '%s' added" % word)
 
     @classmethod
     def harvestPolishMeaning(cls):
-        for word in EnglishHelper.query("SELECT english_word FROM EnglishWords"):
-            polishWord = dikiTranslator.searchWordPolishMeaning(word)
-            print polishWord
-            if not EnglishHelper._checkIfExistsInDB("polish_word", "PolishWords", "polish_word", polishWord):
-                EnglishHelper.query("INSERT INTO PolishWords (polish_word) values ('%s')" % (polishWord))
 
+        for id_eng, word in EnglishHelper.query("SELECT id_eng, english_word FROM EnglishWords",fetchAll=True):
+            if not EnglishHelper._checkIfExistsInDB("id_eng","translations","id_eng",id_eng):
+                polishWord = dikiTranslator.searchWordPolishMeaning(word)
+                if polishWord:
+                    print "ID_ENG:",id_eng," WORD:", word
+                    if not EnglishHelper._checkIfExistsInDB("polish_word", "PolishWords", "polish_word", polishWord):
+                        EnglishHelper.query("INSERT INTO PolishWords (polish_word) values ('%s')" % (polishWord))
+                        newPolishWord_id = EnglishHelper.query("SELECT id_pl FROM PolishWords WHERE polish_word='%s'" %polishWord)
+                        print "ID_PL:",newPolishWord_id[0],"connected in transactions table"
+                        EnglishHelper.query("INSERT INTO translations (id_eng,id_pl) values ('%s','%s')" %(id_eng,newPolishWord_id[0]))
+                else: print (word,"sorry, there was a problem with translations")
+
+
+    @classmethod
+    def showTranslatedWithoutJoin(cls):
+        """
+        only for select query training
+        """
+        print ("ALL WORDS WITH TRANSLATIONS STORED IN DATABASE:")
+        for word1 in EnglishHelper.query("SELECT english_word FROM EnglishWords", fetchAll=True):
+            try:
+                print word1[0]," - ", (EnglishHelper.query("select polish_word from PolishWords where "
+                                           " id_pl=(select id_pl from translations where "
+                                           "id_eng = (select id_eng from EnglishWords "
+                                           "where english_word = '%s'))"%word1))[0].encode('utf-8')
+            except:
+                print "There is no translation, sorry :("
 
 
 
@@ -60,7 +82,8 @@ class EnglishHelper():
 
 if __name__ == "__main__":
     EnglishHelper.addNewWordsFromFile("words1.txt")
-    #EnglishHelper.harvestPolishMeaning()
+    EnglishHelper.harvestPolishMeaning()
+    EnglishHelper.showTranslatedWithoutJoin()
     #print EnglishHelper.query("SELECT * FROM ENGLISH_HELPER.PolishWords;")
 
 

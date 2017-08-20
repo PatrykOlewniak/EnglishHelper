@@ -21,7 +21,10 @@ class dikiTranslator:
         bsObj = BeautifulSoup(html.read(), "html5lib")
         nameList = bsObj.findAll("span", {"class": "hw"})
         #strip for removing spaces and tabs before
-        return (nameList[1].get_text()).strip()
+        if len(nameList) >= 1:
+            return (nameList[1].get_text()).strip()
+        else:
+            Exception
 
 
 
