@@ -3,10 +3,9 @@
 from urllib import urlopen
 from bs4 import BeautifulSoup
 
-
 class dikiTranslator:
     url = "https://www.diki.pl"
-    searchingSuffix= "/slownik-angielskiego?q="
+    searchingSuffix = "/slownik-angielskiego?q="
 
     @staticmethod
     def searchWordPartOfSpeech(word):
@@ -24,7 +23,7 @@ class dikiTranslator:
         if len(nameList) >= 1:
             return (nameList[1].get_text()).strip()
         else:
-            Exception
+            Exception("Wrong Element")
 
 
 
