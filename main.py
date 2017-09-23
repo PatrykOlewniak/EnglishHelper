@@ -7,8 +7,8 @@ import myconfig
 from fileReader import MainFileHandler
 from wordHarvester import dikiTranslator
 
-password=myconfig.password
-user=myconfig.user
+password = myconfig.password
+user = myconfig.user
 
 class EnglishHelper():
     db_con = Connection(user=user, password=password, database='ENGLISH_HELPER')
@@ -17,7 +17,7 @@ class EnglishHelper():
     def menu(self):
         print ("A - add new word")
         choice = input()
-        if choice=='A':
+        if choice == 'A':
             print ("Write down your english word:")
 
     @classmethod
@@ -26,7 +26,7 @@ class EnglishHelper():
         return result
 
     @classmethod
-    def _checkIfExistsInDB(cls,column,table, columnToSearch, word):
+    def _checkIfExistsInDB(cls, column, table, columnToSearch, word):
         if EnglishHelper.query("SELECT %s FROM %s WHERE %s='%s'"%(column, table, columnToSearch,word, )):
              return True
         else:
@@ -109,13 +109,13 @@ class EnglishHelper():
 
 
 if __name__ == "__main__":
-    #EnglishHelper.addNewWordsFromFile("words1.txt")
+    EnglishHelper.addNewWordsFromFile("words1.txt")
     #EnglishHelper.harvestPolishMeaning()
     #EnglishHelper.showTranslatedWithoutJoin()
-    #print EnglishHelper.query("SELECT * FROM ENGLISH_HELPER.PolishWords;")
-    #print EnglishHelper.shuffleForEngWord()
+    #print EnglishHelper.query("SELECT * FROM ENGLISH_HELPER.PolishWords;",True)
+    #vprint EnglishHelper.shuffleForEngWord()
     #print EnglishHelper.shuffleForPLWord()
-    EnglishHelper.askForWordAndCheck()
+    #EnglishHelper.askForWordAndCheck()
 
 
 
