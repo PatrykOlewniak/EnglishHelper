@@ -5,15 +5,15 @@ class MainFileHandler:
         self.file = file
         self.readFile(self.file)
 
-    def readFile(self,fileSource, directory="files/",method="r"):
+    def readFile(self, fileSource, directory="files/", method="r"):
         self.file = open(str(directory+fileSource), method)
 
     def wordsToList(self):
-        wordsList = self.file.read().rstrip('').split(",")
+        wordsList = self.file.read().strip('').split(",")
         return wordsList
 
     def __str__(self):
-        return ("Words in file: "+str(self.wordsToList()))
+        return ("Words in file: " + str(self.wordsToList()))
 
 
 
